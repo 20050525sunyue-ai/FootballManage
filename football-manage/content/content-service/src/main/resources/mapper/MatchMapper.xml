@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sky.content.mapper.MatchMapper">
+
+    <!--
+      分页条数由 PageHelper 处理；keyword：比赛名称/对手/场地模糊；status：0 未开始 1 已结束，null 不限
+      响应字段与实体 MatchInfo 一致（JSON 中 matchTime、createTime 等为驼峰）
+    -->
+    <select id="MatchPageQuery" resultType="MatchInfo">
+        SELECT id,
+               title,
+               opponent,
+               match_time,
+               location,
+               score,
+               result,
+               description,
+               status,
+               create_time,
+               update_time
+        FROM match_info
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND (
+                    title LIKE CONCAT('%', #{keyword}, '%')
+                    OR opponent LIKE CONCAT('%', #{keyword}, '%')
+                    OR location LIKE CONCAT('%', #{keyword}, '%')
+                    )
+            </if>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+        </where>
+        ORDER BY match_time DESC, id DESC
+    </select>
+
+    <!-- 新增比赛 -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO match_info (title, opponent, match_time, location, score, result, description, status)
+        VALUES (#{title}, #{opponent}, #{matchTime}, #{location}, #{score}, #{result}, #{description}, #{status})
+    </insert>
+
+    <!-- 全量更新（Service 层已合并部分字段） -->
+    <update id="update">
+        UPDATE match_info
+        SET title       = #{title},
+            opponent    = #{opponent},
+            match_time  = #{matchTime},
+            location    = #{location},
+            score       = #{score},
+            result      = #{result},
+            description = #{description},
+            status      = #{status}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 按主键删除 -->
+    <delete id="deleteById">
+        DELETE FROM match_info WHERE id = #{id}
+    </delete>
+
+    <!-- 比赛详情 -->
+    <select id="getById" resultType="MatchInfo">
+        SELECT id,
+               title,
+               opponent,
+               match_time,
+               location,
+               score,
+               result,
+               description,
+               status,
+               create_time,
+               update_time
+        FROM match_info
+        WHERE id = #{id}
+    </select>
+</mapper>

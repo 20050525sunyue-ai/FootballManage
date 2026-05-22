@@ -1,0 +1,25 @@
+# 本地开发示例：复制为 application-dev.yml 并填写真实值，勿提交 application-dev.yml
+sky:
+  jwt:
+    enabled: true
+
+#  datasource:
+#    host: your-host
+#    password: your-password
+#
+#  redis:
+#    host: localhost
+#    password: your-redis-password
+#
+#  alioss:
+#    endpoint: oss-cn-beijing.aliyuncs.com
+#    access-key-id: ${ALIYUN_ACCESS_KEY_ID}
+#    access-key-secret: ${ALIYUN_ACCESS_KEY_SECRET}
+#    bucket-name: your-bucket
+
+logging:
+  level:
+    com.sky.content.mapper: debug
+    com.sky.content.service: info
+    com.sky.content.api: info
+    com.sky.security: debug

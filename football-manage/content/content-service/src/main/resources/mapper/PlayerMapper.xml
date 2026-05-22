@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sky.content.mapper.PlayerMapper">
+
+    <!-- keyword：姓名、学号、手机模糊；teamId 非空时按 team_id 筛选；空则不限制队伍 -->
+    <select id="PlayerPageQuery" resultType="Player">
+        SELECT id,
+               name,
+               student_id,
+               age,
+               phone,
+               height,
+               weight,
+               avatar,
+               description,
+               team_id,
+               create_time,
+               update_time
+        FROM player
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND (
+                    name LIKE CONCAT('%', #{keyword}, '%')
+                    OR student_id LIKE CONCAT('%', #{keyword}, '%')
+                    OR phone LIKE CONCAT('%', #{keyword}, '%')
+                )
+            </if>
+            <if test="teamId != null">
+                AND team_id = #{teamId}
+            </if>
+        </where>
+        ORDER BY update_time DESC, id DESC
+    </select>
+
+</mapper>

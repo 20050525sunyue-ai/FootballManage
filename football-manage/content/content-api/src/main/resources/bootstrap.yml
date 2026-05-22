@@ -1,0 +1,14 @@
+# 端口、context-path、sky.jwt、logging 等以 Nacos content-api-dev.yaml 为准（context-path: /api）
+# 建议在 Nacos logging.level 中增加：com.sky.security: debug
+
+spring:
+  application:
+    name: content-api
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      config:
+        server-addr: 192.168.101.128:8848
+        file-extension: yaml
+        group: Content

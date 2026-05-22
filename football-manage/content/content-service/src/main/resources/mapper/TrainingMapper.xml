@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sky.content.mapper.TrainingMapper">
+
+    <!--
+      分页由 PageHelper；keyword：队伍/地点/教练/内容模糊
+    -->
+    <select id="TrainingPageQuery" resultType="Training">
+        SELECT id,
+               team,
+               training_time,
+               location,
+               content,
+               coach,
+               create_time,
+               update_time
+        FROM training
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND (
+                    team LIKE CONCAT('%', #{keyword}, '%')
+                    OR location LIKE CONCAT('%', #{keyword}, '%')
+                    OR coach LIKE CONCAT('%', #{keyword}, '%')
+                    OR content LIKE CONCAT('%', #{keyword}, '%')
+                    )
+            </if>
+        </where>
+        ORDER BY training_time DESC, id DESC
+    </select>
+
+    <!-- 新增训练 -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO training (team, training_time, location, content, coach)
+        VALUES (#{team}, #{trainingTime}, #{location}, #{content}, #{coach})
+    </insert>
+
+    <!-- 全量更新（Service 层已合并部分字段） -->
+    <update id="update">
+        UPDATE training
+        SET team           = #{team},
+            training_time  = #{trainingTime},
+            location       = #{location},
+            content        = #{content},
+            coach          = #{coach}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 按主键删除 -->
+    <delete id="deleteById">
+        DELETE FROM training WHERE id = #{id}
+    </delete>
+
+    <!-- 训练详情 -->
+    <select id="getById" resultType="Training">
+        SELECT id,
+               team,
+               training_time,
+               location,
+               content,
+               coach,
+               create_time,
+               update_time
+        FROM training
+        WHERE id = #{id}
+    </select>
+</mapper>

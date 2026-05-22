@@ -1,0 +1,30 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      routes:
+        # 业务 API：转发到 content-service（8081，context-path=/api）
+        - id: content-service
+          uri: http://127.0.0.1:8081
+          predicates:
+            - Path=/api/**
+        # Knife4j / Swagger 文档（开发调试用）
+        - id: content-service-doc
+          uri: http://127.0.0.1:8081
+          predicates:
+            - Path=/doc.html,/webjars/**,/swagger-resources/**,/v2/api-docs/**,/v3/api-docs/**
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOriginPatterns: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+            allowCredentials: true
+
+logging:
+  level:
+    org.springframework.cloud.gateway: INFO

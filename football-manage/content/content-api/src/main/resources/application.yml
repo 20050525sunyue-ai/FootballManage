@@ -1,0 +1,40 @@
+﻿spring:
+  main:
+    allow-circular-references: true
+  # 本地兜底：Nacos 未拉取到 content-api-dev.yaml 时仍可用（值来自 application-dev 的 sky.*）
+#  datasource:
+#    druid:
+#      driver-class-name: ${sky.datasource.driver-class-name}
+#      url: jdbc:mysql://${sky.datasource.host}:${sky.datasource.port}/${sky.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+#      username: ${sky.datasource.username}
+#      password: ${sky.datasource.password}
+#  redis:
+#    host: ${sky.redis.host}
+#    port: ${sky.redis.port}
+#    password: ${sky.redis.password}
+#    database: ${sky.redis.database}
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.sky.content.model.dto,com.sky.content.model.po
+  configuration:
+    map-underscore-to-camel-case: true
+
+#logging:
+#  level:
+#    com.sky.content.mapper: debug
+#    com.sky.content.service: info
+#    com.sky.content.api: info
+
+#sky:
+#  jwt:
+#    # 是否开启 JWT 拦截（生产必须为 true；dev 可在 application-dev 中覆盖为 false）
+#    enabled: true
+#    # 设置jwt签名加密时使用的秘钥
+#    SecretKey: Tom
+#    # 设置jwt过期时间
+#    Ttl: 7200000
+#    # 兼容自定义请求头（优先使用 Authorization: Bearer <token>）
+#    TokenName: token
+#
+

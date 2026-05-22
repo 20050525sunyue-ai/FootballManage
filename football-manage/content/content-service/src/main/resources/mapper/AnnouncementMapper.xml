@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sky.content.mapper.AnnouncementMapper">
+
+    <!--
+      分页由 PageHelper；keyword：标题、正文模糊
+    -->
+    <select id="AnnouncementPageQuery" resultType="Announcement">
+        SELECT id,
+               title,
+               content,
+               publisher,
+               publish_time,
+               create_time,
+               update_time
+        FROM announcement
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND (
+                    title LIKE CONCAT('%', #{keyword}, '%')
+                    OR content LIKE CONCAT('%', #{keyword}, '%')
+                    )
+            </if>
+        </where>
+        ORDER BY publish_time DESC, id DESC
+    </select>
+
+    <!-- 新增公告 -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO announcement (title, content, publisher, publish_time)
+        VALUES (#{title}, #{content}, #{publisher}, #{publishTime})
+    </insert>
+
+    <!-- 全量更新（Service 层已合并部分字段） -->
+    <update id="update">
+        UPDATE announcement
+        SET title        = #{title},
+            content      = #{content},
+            publisher    = #{publisher},
+            publish_time = #{publishTime}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 按主键删除 -->
+    <delete id="deleteById">
+        DELETE FROM announcement WHERE id = #{id}
+    </delete>
+
+    <!-- 公告详情 -->
+    <select id="getById" resultType="Announcement">
+        SELECT id,
+               title,
+               content,
+               publisher,
+               publish_time,
+               create_time,
+               update_time
+        FROM announcement
+        WHERE id = #{id}
+    </select>
+</mapper>

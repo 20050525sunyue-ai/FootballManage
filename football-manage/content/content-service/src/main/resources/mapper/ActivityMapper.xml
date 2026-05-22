@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sky.content.mapper.ActivityMapper">
+
+    <!--
+      分页由 PageHelper；keyword：标题/地点/负责人模糊
+    -->
+    <select id="ActivityPageQuery" resultType="Activity">
+        SELECT id,
+               title,
+               activity_time,
+               location,
+               content,
+               leader,
+               create_time,
+               update_time
+        FROM activity
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND (
+                    title LIKE CONCAT('%', #{keyword}, '%')
+                    OR location LIKE CONCAT('%', #{keyword}, '%')
+                    OR leader LIKE CONCAT('%', #{keyword}, '%')
+                    )
+            </if>
+        </where>
+        ORDER BY activity_time DESC, id DESC
+    </select>
+
+    <!-- 新增活动 -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO activity (title, activity_time, location, content, leader)
+        VALUES (#{title}, #{activityTime}, #{location}, #{content}, #{leader})
+    </insert>
+
+    <!-- 全量更新（Service 层已合并部分字段） -->
+    <update id="update">
+        UPDATE activity
+        SET title          = #{title},
+            activity_time  = #{activityTime},
+            location       = #{location},
+            content        = #{content},
+            leader         = #{leader}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 按主键删除 -->
+    <delete id="deleteById">
+        DELETE FROM activity WHERE id = #{id}
+    </delete>
+
+    <!-- 活动详情 -->
+    <select id="getById" resultType="Activity">
+        SELECT id,
+               title,
+               activity_time,
+               location,
+               content,
+               leader,
+               create_time,
+               update_time
+        FROM activity
+        WHERE id = #{id}
+    </select>
+</mapper>

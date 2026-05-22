@@ -1,0 +1,27 @@
+﻿sky:
+  jwt:
+    # 开发阶段关闭令牌校验，联调/文档调试无需带 Token
+    enabled: true
+
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    host: 192.168.101.128
+#    port: 3306
+#    database: teamhub
+#    username: root
+#    password: mysql
+#
+#  redis:
+#    host: localhost
+#    port: 6379
+#    password: 123456
+#    database: 10
+
+# 与 Nacos content-api-dev.yaml 对齐；本地未连 Nacos 时作为兜底
+#logging:
+#  level:
+#    com.sky.content.mapper: debug
+#    com.sky.content.service: info
+#    com.sky.content.api: info
+#    com.sky.security: debug
+#    com.sky.content.interceptor: debug
